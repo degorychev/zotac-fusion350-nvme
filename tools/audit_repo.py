@@ -9,11 +9,12 @@ import re
 import sys
 
 FORBIDDEN_SUFFIXES = {".rom", ".bin", ".fd", ".cap", ".ffs", ".zip", ".7z", ".rar", ".bak"}
-FORBIDDEN_PARTS = {"dumps", "private", "efivars", ".git"}
-IGNORED_PARTS = {"__pycache__", ".pytest_cache", ".venv", "build", "dist"}
+FORBIDDEN_PARTS = {"dumps", "private", "efivars"}
+IGNORED_PARTS = {".git", "__pycache__", ".pytest_cache", ".venv", "build", "dist"}
 KNOWN_GUIDS = {
     "5BE3BDF4-53CF-46A3-A6A9-73C34A6E5EE3",  # firmware module identity
 }
+KNOWN_IP_LIKE = {"1.1.0.0"}  # AGESA version, not a network address
 PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----"),
     "Windows absolute path": re.compile(r"[A-Za-z]:\\(?:Users|Documents and Settings)\\[^\s/`]+", re.I),
@@ -55,6 +56,8 @@ def audit(root: pathlib.Path) -> list[str]:
             for match in pattern.finditer(text):
                 value = match.group(0)
                 if label == "UUID" and value.upper() in KNOWN_GUIDS:
+                    continue
+                if label == "IP address" and value in KNOWN_IP_LIKE:
                     continue
                 line = text.count("\n", 0, match.start()) + 1
                 findings.append(f"{label}: {rel}:{line}: {value[:80]}")
