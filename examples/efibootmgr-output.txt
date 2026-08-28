@@ -1,0 +1,5 @@
+# Sanitized example: the GPT partition identifier was intentionally removed.
+BootCurrent: 0000
+BootOrder: 0000,0001
+Boot0000* PBS HD(2,GPT,...)/File(\EFI\BOOT\BOOTX64.EFI)
+

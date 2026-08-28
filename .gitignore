@@ -1,0 +1,24 @@
+# Proprietary or machine-specific firmware
+*.rom
+*.bin
+*.fd
+*.cap
+*.ffs
+dumps/
+private/
+efivars/
+
+# Archives and backups
+*.zip
+*.7z
+*.rar
+*.bak
+
+# Generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+build/
+dist/
+
